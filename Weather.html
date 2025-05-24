@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Weather App</title>
   <style>
-        * {
+    * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
@@ -68,7 +68,8 @@
     <button onclick="getWeather()">Get Weather</button>
     <div class="result" id="weatherResult"></div>
   </div>
-    <script>
+
+  <script>
     async function getWeather() {
       const city = document.getElementById("cityInput").value;
       const apiKey = "your_api_key_here"; // Replace with your OpenWeatherMap API key
