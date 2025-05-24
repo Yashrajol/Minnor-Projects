@@ -5,33 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Weather App</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background: linear-gradient(to right, #83a4d4, #b6fbff);
-      transition: background 0.5s ease;
-    }
-    .weather-container {
-      background: rgba(255, 255, 255, 0.8);
-      padding: 2rem;
-      border-radius: 1rem;
-      box-shadow: 0 0 20px rgba(0,0,0,0.1);
-      width: 90%;
-      max-width: 400px;
-      text-align: center;
-    }
-    .weather-container h1 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
+
     .weather-container input {
       width: 100%;
       padding: 0.5rem;
@@ -68,5 +42,47 @@
     <button onclick="getWeather()">Get Weather</button>
     <div class="result" id="weatherResult"></div>
   </div>
+    <script>
+    async function getWeather() {
+      const city = document.getElementById("cityInput").value;
+      const apiKey = "your_api_key_here"; // Replace with your OpenWeatherMap API key
+      const resultDiv = document.getElementById("weatherResult");
+
+      if (!city) {
+        resultDiv.innerText = "Please enter a city name.";
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
+        );
+        const data = await response.json();
+
+        if (data.cod === 200) {
+          const temp = data.main.temp;
+          const desc = data.weather[0].description;
+          const cityName = data.name;
+          resultDiv.innerHTML = `<strong>${cityName}</strong><br/>Temperature: ${temp} °C<br/>Description: ${desc}`;
+          changeBackground(temp);
+        } else {
+          resultDiv.innerText = "City not found. Please try again.";
+        }
+      } catch (error) {
+        resultDiv.innerText = "Error fetching weather data.";
+      }
+    }
+
+    function changeBackground(temp) {
+      const body = document.body;
+      if (temp < 10) {
+        body.style.background = "linear-gradient(to right, #83a4d4, #b6fbff)";
+      } else if (temp < 25) {
+        body.style.background = "linear-gradient(to right, #fddb92, #d1fdff)";
+      } else {
+        body.style.background = "linear-gradient(to right, #ff512f, #dd2476)";
+      }
+    }
+  </script>
 </body>
 </html>
